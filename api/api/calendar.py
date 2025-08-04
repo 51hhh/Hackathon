@@ -21,7 +21,7 @@ def get_calendar_data():
     calendar_days = []
     today_date = date.today()
 
-    with open('data/interactions.json', 'r', encoding='utf-8') as f:
+    with open('./data/interactions.json', 'r', encoding='utf-8') as f:
         all_interactions = json.load(f)
 
     for week in month_days:

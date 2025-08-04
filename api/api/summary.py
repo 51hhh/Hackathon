@@ -4,8 +4,8 @@ import os
 
 summary_bp = Blueprint('summary_api', __name__)
 
-MP3_DIR = 'mp3'
-METADATA_FILE = 'mp3/mp3_metadata.json'
+MP3_DIR = './mp3'
+METADATA_FILE = './mp3/mp3_metadata.json'
 
 @summary_bp.route('/recordings')
 def get_recordings():

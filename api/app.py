@@ -1,7 +1,7 @@
 from flask import Flask, render_template, send_from_directory
-from api.device import device_bp
-from api.calendar import calendar_bp
-from api.summary import summary_bp
+from .api.device import device_bp
+from .api.calendar import calendar_bp 
+from .api.summary import summary_bp
 import os
 
 app = Flask(__name__)
