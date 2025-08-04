@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+
+{% block title %}Social Hub - Calendar{% endblock %}
+
+{% block header_primary_text %}My{% endblock %}
+{% block header_dashboard_text %}Calendar{% endblock %}
+
+{% block main_content_section %}
+    <section class="calendar-container">
+        <div class="calendar-header">
+            <button class="calendar-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+            <h2>{{ current_month_name }} {{ current_year }}</h2>
+            <button class="calendar-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid-container">
+            <div class="calendar-day-name">Sun</div>
+            <div class="calendar-day-name">Mon</div>
+            <div class="calendar-day-name">Tue</div>
+            <div class="calendar-day-name">Wed</div>
+            <div class="calendar-day-name">Thu</div>
+            <div class="calendar-day-name">Fri</div>
+            <div class="calendar-day-name">Sat</div>
+            <!-- Calendar days will be loaded here by JavaScript -->
+        </div>
+        <div class="calendar-details-section" id="calendar-details-section">
+            <h3>日期详情</h3>
+            <div id="selected-date-display">请点击一个日期查看详情。</div>
+            <div id="interaction-details-list">
+                <!-- Interaction details will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_styles %}
+    <style>
+        /* Calendar specific styles */
+        .calendar-container {
+            background-color: var(--card-bg-white);
+            border-radius: var(--border-radius-card);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-top: 25px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+
+        .calendar-nav button {
+            background-color: var(--primary-purple);
+            color: var(--text-white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .calendar-nav button:hover {
+            background-color: #7B5CD6;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .calendar-day-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            padding: 10px 0;
+        }
+
+        .calendar-date {
+            background-color: var(--bg-light-grey);
+            border-radius: var(--border-radius-small);
+            padding: 15px 0;
+            min-height: 80px; /* Ensure consistent height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .calendar-date:hover {
+            background-color: #e0e2e5;
+        }
+
+        .calendar-date.current-month {
+            background-color: var(--card-bg-white);
+            border: 1px solid var(--primary-purple);
+        }
+
+        .calendar-date.today {
+            background-color: var(--primary-purple);
+            color: var(--text-white);
+        }
+
+        .calendar-date.selected-date {
+            background-color: var(--light-purple); /* Use a lighter purple/blue for selected */
+            color: var(--text-white);
+            border: 1px solid var(--light-purple);
+        }
+
+        .calendar-date.today .date-number {
+            font-weight: 700;
+        }
+
+        .date-number {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .interaction-marker {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--pink-gradient-start); /* Example color for interaction */
+            margin-top: 5px;
+            cursor: pointer; /* Add pointer cursor */
+            transition: transform 0.2s ease; /* Add a subtle hover effect */
+        }
+
+        .interaction-marker:hover {
+            transform: scale(1.2); /* Slightly enlarge on hover */
+        }
+
+        .interaction-markers {
+            display: flex;
+            gap: 4px;
+            margin-top: 5px;
+        }
+        .interaction-marker.friend-1 { background-color: #33FF57; } /* Green */
+        .interaction-marker.friend-2 { background-color: #3357FF; } /* Blue */
+        .interaction-marker.friend-3 { background-color: #FFFF33; } /* Yellow */
+        .interaction-marker.friend-4 { background-color: #FF33FF; } /* Magenta */
+
+        /* New styles for details section */
+        .calendar-details-section {
+            background-color: var(--bg-light-grey);
+            border-radius: var(--border-radius-card);
+            padding: 20px;
+            margin-top: 25px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .calendar-details-section h3 {
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        #selected-date-display {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .interaction-detail-item {
+            background-color: var(--card-bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-small);
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .interaction-detail-item h4 {
+            color: var(--primary-purple);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .interaction-detail-item p {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+    </style>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        let currentYear;
+        let currentMonth;
+        let calendarDataCache = {}; // Cache to store fetched calendar data
+        let selectedDateElement = null; // To keep track of the currently selected date element
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentYear = parseInt(urlParams.get('year')) || new Date().getFullYear();
+            currentMonth = parseInt(urlParams.get('month')) || (new Date().getMonth() + 1);
+            loadCalendar(currentYear, currentMonth);
+        });
+
+        function loadCalendar(year, month) {
+            const cacheKey = `${year}-${month}`;
+            if (calendarDataCache[cacheKey]) {
+                renderCalendar(calendarDataCache[cacheKey]);
+                return;
+            }
+
+            fetch(`/api/calendar_data?year=${year}&month=${month}`)
+                .then(response => response.json())
+                .then(data => {
+                    calendarDataCache[cacheKey] = data; // Store in cache
+                    renderCalendar(data);
+                })
+                .catch(error => console.error('Error fetching calendar data:', error));
+        }
+
+        function renderCalendar(data) {
+            document.querySelector('.calendar-header h2').textContent = `${data.current_month_name} ${data.current_year}`;
+            const gridContainer = document.getElementById('calendar-grid-container');
+            // Clear previous days, but keep day names
+            while (gridContainer.children.length > 7) {
+                gridContainer.removeChild(gridContainer.lastChild);
+            }
+            selectedDateElement = null; // Reset selected date on month change
+
+            data.calendar_days.forEach(day => {
+                const interactionMarkersHtml = day.interactions.map(interaction => 
+                    `<div class="interaction-marker ${interaction.class}"></div>`
+                ).join('');
+
+                const dayHtml = `
+                    <div class="calendar-date ${day.is_current_month ? 'current-month' : ''} ${day.is_today ? 'today' : ''}"
+                         data-day-number="${day.day_number}"
+                         data-month="${currentMonth}"
+                         data-year="${currentYear}"
+                         data-is-current-month="${day.is_current_month}"
+                         data-interactions='${JSON.stringify(day.interactions)}'>
+                        <span class="date-number">${day.day_number}</span>
+                        ${day.interactions.length > 0 ? `<div class="interaction-markers">${interactionMarkersHtml}</div>` : ''}
+                    </div>
+                `;
+                gridContainer.insertAdjacentHTML('beforeend', dayHtml);
+            });
+
+            // Add click listeners to newly rendered days
+            document.querySelectorAll('.calendar-date.current-month').forEach(dateElement => {
+                dateElement.addEventListener('click', function() {
+                    displayDayDetails(this);
+                });
+            });
+        }
+
+        function changeMonth(offset) {
+            currentMonth += offset;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            } else if (currentMonth < 1) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            loadCalendar(currentYear, currentMonth);
+        }
+
+        function displayDayDetails(clickedElement) {
+            // Remove 'selected-date' from previously selected element
+            if (selectedDateElement) {
+                selectedDateElement.classList.remove('selected-date');
+            }
+
+            // Add 'selected-date' to the newly clicked element
+            clickedElement.classList.add('selected-date');
+            selectedDateElement = clickedElement;
+
+            const dayNumber = clickedElement.dataset.dayNumber;
+            const month = clickedElement.dataset.month;
+            const year = clickedElement.dataset.year;
+            const isCurrentMonth = clickedElement.dataset.isCurrentMonth === 'true';
+            let interactions = [];
+
+            if (isCurrentMonth && dayNumber !== '') {
+                try {
+                    interactions = JSON.parse(clickedElement.dataset.interactions);
+                } catch (e) {
+                    console.error("Error parsing interactions data:", e);
+                }
+            }
+
+            const selectedDateDisplay = document.getElementById('selected-date-display');
+            const interactionDetailsList = document.getElementById('interaction-details-list');
+
+            if (isCurrentMonth && dayNumber !== '') {
+                selectedDateDisplay.textContent = `${year}年${month}月${dayNumber}日 详情:`;
+                interactionDetailsList.innerHTML = ''; // Clear previous details
+
+                if (interactions.length > 0) {
+                    interactions.forEach(interaction => {
+                        const detailItem = `
+                            <div class="interaction-detail-item">
+                                <h4>${interaction.title || '无标题'}</h4>
+                                <p>${interaction.description || '无描述'}</p>
+                            </div>
+                        `;
+                        interactionDetailsList.insertAdjacentHTML('beforeend', detailItem);
+                    });
+                } else {
+                    interactionDetailsList.innerHTML = '<p>这一天没有互动。</p>';
+                }
+            } else {
+                selectedDateDisplay.textContent = '请点击一个日期查看详情。';
+                interactionDetailsList.innerHTML = '';
+            }
+        }
+    </script>
+{% endblock %}

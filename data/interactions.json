@@ -1,0 +1,30 @@
+{
+    "2025-07-05": [
+        {"class": "friend-1", "title": "与朋友A的午餐", "description": "讨论了周末计划和新项目。"},
+        {"class": "friend-2", "title": "与朋友B的电话", "description": "关于旅行安排的快速通话。"}
+    ],
+    "2025-07-08": [
+        {"class": "friend-3", "title": "医生预约", "description": "年度体检和健康咨询。"},
+        {"class": "friend-4", "title": "瑜伽课程", "description": "参加了新的瑜伽课程，感觉很放松。"}
+    ],
+    "2025-07-12": [
+        {"class": "friend-3", "title": "家庭聚会", "description": "庆祝奶奶的生日，大家都很开心。"}
+    ],
+    "2025-07-15": [
+        {"class": "friend-1", "title": "工作会议", "description": "讨论季度目标和项目进展。"},
+        {"class": "friend-2", "title": "电影之夜", "description": "和朋友一起看了新上映的电影。"}
+    ],
+    "2025-07-20": [
+        {"class": "friend-4", "title": "健身房锻炼", "description": "完成了高强度间歇训练。"},
+        {"class": "friend-1", "title": "与朋友A的咖啡", "description": "分享了最近的工作进展。"},
+        {"class": "friend-2", "title": "在线游戏", "description": "与朋友B一起玩了新游戏。"}
+    ],
+    "2025-07-25": [
+        {"class": "friend-3", "title": "购物日", "description": "购买了新的工作服和生活用品。"},
+        {"class": "friend-4", "title": "读书会", "description": "参加了社区读书会，讨论了一本新书。"}
+    ],
+    "2025-08-01": [
+        {"class": "friend-1", "title": "项目启动会议", "description": "与团队讨论了新项目的目标和初步计划。"},
+        {"class": "friend-2", "title": "阅读时间", "description": "阅读了一本关于Python编程的新书。"}
+    ]
+}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Social Hub - Device Info{% endblock %}
+
+{% block header_primary_text %}My{% endblock %}
+{% block header_dashboard_text %}Device Info{% endblock %}
+
+{% block main_content_section %}
+    <section class="device-info-container">
+        <div class="card device-info-card">
+            <h3>设备状态概览</h3>
+            <div class="info-grid" id="device-info-grid">
+                <!-- Device info will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_styles %}
+    <style>
+        .device-info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .device-info-card {
+            padding: 20px 25px;
+        }
+        .device-info-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .info-item {
+            background-color: var(--bg-light-grey);
+            border-radius: var(--border-radius-small);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .info-item .icon {
+            font-size: 2rem;
+            color: var(--light-purple);
+            margin-bottom: 10px;
+        }
+        .info-item .label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        .info-item .value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+    </style>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/device_info')
+                .then(response => response.json())
+                .then(deviceInfo => {
+                    const container = document.getElementById('device-info-grid');
+                    const infoItems = [
+                        { label: '电量续航', value: `${deviceInfo.battery_level}%`, icon: 'fas fa-battery-full' },
+                        { label: '电池状态', value: deviceInfo.battery_status, icon: 'fas fa-charging-station' },
+                        { label: '网络连接', value: deviceInfo.network_status, icon: 'fas fa-wifi' },
+                        { label: '网络类型', value: deviceInfo.network_type, icon: 'fas fa-network-wired' },
+                        { label: '软件版本', value: deviceInfo.software_version, icon: 'fas fa-code-branch' },
+                        { label: '上次更新', value: deviceInfo.last_update, icon: 'fas fa-sync-alt' },
+                        { label: '型号名称', value: deviceInfo.model_name, icon: 'fas fa-microchip' },
+                        { label: '序列号', value: deviceInfo.serial_number, icon: 'fas fa-barcode' }
+                    ];
+
+                    infoItems.forEach(item => {
+                        const infoCard = `
+                            <div class="info-item">
+                                <i class="${item.icon} icon"></i>
+                                <div class="label">${item.label}</div>
+                                <div class="value">${item.value}</div>
+                            </div>
+                        `;
+                        container.insertAdjacentHTML('beforeend', infoCard);
+                    });
+                })
+                .catch(error => console.error('Error fetching device info:', error));
+        });
+    </script>
+{% endblock %}

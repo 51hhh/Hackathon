@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Team Meeting - Project Alpha",
+        "date": "2024-07-29",
+        "duration": "40 min",
+        "participants": "John, Jane, Mike",
+        "summary": "Discussed project milestones, assigned tasks for next sprint, and reviewed Q3 goals."
+    },
+    {
+        "id": 2,
+        "title": "Client Call - New Feature Request",
+        "date": "2024-07-28",
+        "duration": "30 min",
+        "participants": "John, Client A",
+        "summary": "Client requested a new reporting feature. Discussed feasibility and timeline."
+    },
+    {
+        "id": 3,
+        "title": "Brainstorming Session - Marketing Campaign",
+        "date": "2024-07-25",
+        "duration": "60 min",
+        "participants": "John, Sarah, Emily",
+        "summary": "Brainstormed ideas for the new marketing campaign. Focused on social media integration."
+    }
+]

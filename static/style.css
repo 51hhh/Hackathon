@@ -1,0 +1,668 @@
+/* Variables for easier theme management */
+:root {
+    --primary-purple: #5A3E9C;
+    --light-purple: #8A6FE6; /* For active sidebar item */
+    --pink-gradient-start: #FF7E84;
+    --pink-gradient-end: #FFB6B9;
+    --green-online: #28a745; /* Green for online status */
+    --red-offline: #dc3545; /* Red for offline status */
+    --bg-light-grey: #F0F2F5;
+    --card-bg-white: #FFFFFF;
+    --text-dark: #333;
+    --text-light: #999;
+    --text-white: #FFFFFF;
+    --border-radius-card: 18px;
+    --border-radius-small: 10px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-light-grey);
+    color: var(--text-dark);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Use height instead of min-height */
+    margin: 0; /* Remove default body margin */
+    overflow: hidden; /* Hide scrollbars if content overflows */
+}
+
+/* Dashboard Wrapper */
+.dashboard-wrapper {
+    display: grid;
+    grid-template-columns: 80px 1fr; /* Sidebar, Main Content */
+    gap: 25px;
+    background-color: var(--bg-light-grey);
+    border-radius: var(--border-radius-card);
+    padding: 20px;
+    width: 90vw; /* Set width to 90% of viewport width */
+    height: 90vh; /* Set height to 90% of viewport height */
+    box-shadow: var(--box-shadow);
+    /* Removed overflow: auto; from here */
+}
+
+/* Left Sidebar */
+.sidebar {
+    background-color: var(--primary-purple);
+    border-radius: var(--border-radius-card);
+    padding: 25px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-white);
+    /* Add fixed positioning */
+    position: sticky; /* or fixed, depending on desired scroll behavior of main content */
+    top: 0;
+    left: 0;
+    height: 100%; /* Take full height of its grid area */
+    z-index: 100; /* Ensure it stays on top */
+}
+
+.sidebar-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: var(--border-radius-small);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nav-item {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--text-white);
+    text-decoration: none;
+    border-radius: var(--border-radius-small);
+    transition: background-color 0.2s ease;
+}
+
+.nav-item.active {
+    background-color: var(--light-purple);
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    overflow-y: auto; /* Allow main content to scroll */
+    height: 100%; /* Take full height of its grid area */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: flex-start; /* Align to start */
+    align-items: center;
+    padding-bottom: 15px; /* Spacing from content below */
+}
+
+.header-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.header-title .primary-text {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+
+/* Social Feed Container */
+.social-feed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Base Card Styles */
+.card {
+    background-color: var(--card-bg-white);
+    border-radius: var(--border-radius-card);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Create Post Card */
+.create-post-card {
+    padding: 20px 25px;
+}
+
+.create-post-card .post-input-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.create-post-card .post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.create-post-card input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    background-color: var(--bg-light-grey);
+    border-radius: var(--border-radius-small);
+    padding: 12px 18px;
+    font-size: 1rem;
+    outline: none;
+    color: var(--text-dark);
+}
+
+.create-post-card .post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px;
+}
+
+.create-post-card .action-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-small);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.create-post-card .action-btn i {
+    margin-right: 8px;
+    color: var(--primary-purple); /* Icon color */
+}
+
+.create-post-card .action-btn:hover {
+    background-color: var(--bg-light-grey);
+    color: var(--text-dark);
+}
+
+.create-post-card .post-btn {
+    background-color: var(--primary-purple);
+    color: var(--text-white);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-small);
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.create-post-card .post-btn:hover {
+    background-color: #7B5CD6; /* Slightly lighter purple */
+}
+
+/* Feed Posts */
+.feed-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-card {
+    padding: 20px 25px;
+}
+
+.post-card .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-card .post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.post-card .post-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.post-card .post-author {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.post-card .post-time {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.post-card .more-options {
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.post-card .post-content {
+    margin-bottom: 15px;
+}
+
+.post-card .post-content p {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.post-card .post-image {
+    max-width: 100%;
+    border-radius: var(--border-radius-small);
+    margin-top: 10px;
+    object-fit: cover;
+}
+
+.post-card .post-footer {
+    border-top: 1px solid var(--bg-light-grey);
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.post-card .post-stats span {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-right: 15px;
+}
+
+.post-card .post-stats i {
+    margin-right: 5px;
+}
+
+.post-card .post-actions-footer button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-small);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.post-card .post-actions-footer button i {
+    margin-right: 5px;
+}
+
+.post-card .post-actions-footer button:hover {
+    background-color: var(--bg-light-grey);
+    color: var(--primary-purple);
+}
+
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.section-header a {
+    text-decoration: none;
+    color: var(--primary-purple);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* My Profile Card */
+.my-profile-card {
+    align-items: center;
+    text-align: center;
+    padding: 30px 25px;
+}
+
+.my-profile-card .profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid var(--primary-purple);
+    box-shadow: 0 0 0 4px rgba(90, 62, 156, 0.2);
+}
+
+.my-profile-card .profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.my-profile-card .profile-status {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.my-profile-card .profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.my-profile-card .profile-stats span {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.my-profile-card .profile-stats strong {
+    font-weight: 700;
+    color: var(--primary-purple);
+}
+
+.my-profile-card .edit-profile-btn {
+    background-color: var(--primary-purple);
+    color: var(--text-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-small);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.my-profile-card .edit-profile-btn:hover {
+    background-color: #7B5CD6;
+}
+
+/* Friends Section (Online Friends) */
+.friends-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.friend-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    position: relative;
+}
+
+.friend-item.online .friend-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background-color: var(--green-online);
+    border: 2px solid var(--card-bg-white);
+    border-radius: 50%;
+}
+
+.friend-item.offline .friend-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background-color: var(--red-offline);
+    border: 2px solid var(--card-bg-white);
+    border-radius: 50%;
+}
+
+.friend-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.friend-status {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.message-icon {
+    color: var(--primary-purple);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.message-icon:hover {
+    color: #7B5CD6;
+}
+
+/* Friend Suggestions Section */
+.suggestions-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.suggestion-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.suggestion-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestion-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.suggestion-mutual {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.add-friend-btn {
+    background-color: var(--primary-purple);
+    color: var(--text-white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: var(--border-radius-small);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-friend-btn:hover {
+    background-color: #7B5CD6;
+}
+
+.add-friend-btn i {
+    margin-right: 5px;
+}
+
+/* Custom Scrollbar Styles */
+/* For Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-light-grey); /* Color of the track */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-purple); /* Color of the scroll thumb */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--light-purple); /* Color of the scroll thumb on hover */
+}
+
+/* Top Navbar for Mobile */
+.top-navbar {
+    display: none; /* Hidden by default on desktop */
+    background-color: var(--primary-purple);
+    color: var(--text-white);
+    padding: 0 20px; /* Adjust padding for nav items */
+    align-items: center;
+    justify-content: center; /* Center nav items */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Fixed height for top navbar */
+    z-index: 1000;
+    box-shadow: var(--box-shadow);
+}
+
+.top-navbar .top-nav-items {
+    display: flex;
+    height: 100%;
+}
+
+.top-navbar .nav-item {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--text-white);
+    text-decoration: none;
+    padding: 0 15px; /* Padding for nav items */
+    transition: background-color 0.2s ease;
+}
+
+.top-navbar .nav-item.active {
+    background-color: var(--light-purple);
+}
+
+.top-navbar .nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Basic Responsiveness */
+@media (max-width: 1200px) {
+    .dashboard-wrapper {
+        grid-template-columns: 80px 1fr; /* Sidebar, Main Content */
+        gap: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    body {
+        padding-top: 60px; /* Space for fixed top navbar */
+    }
+    .top-navbar {
+        display: flex; /* Show top navbar on mobile */
+    }
+    .dashboard-wrapper {
+        grid-template-columns: 1fr; /* Single column layout */
+        padding: 15px;
+        height: calc(90vh - 60px); /* Adjust height for top navbar */
+        margin-top: 0; /* Remove margin from body padding */
+    }
+    .sidebar {
+        display: none; /* Hide sidebar completely on mobile */
+    }
+    .main-content {
+        padding: 0;
+    }
+    .header {
+        flex-wrap: wrap;
+        justify-content: flex-start; /* Align to start */
+        gap: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        padding: 10px;
+    }
+    .card {
+        padding: 15px;
+    }
+    .header-title {
+        font-size: 1.5rem;
+    }
+    /* Removed post-card related styles as posts are removed */
+    .friend-item, .suggestion-item {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .message-icon, .add-friend-btn {
+        margin-top: 10px;
+        width: 100%;
+        text-align: right;
+    }
+    .add-friend-btn {
+        text-align: center;
+    }
+}

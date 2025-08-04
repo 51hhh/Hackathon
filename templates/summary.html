@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Social Hub - Conversation Summary{% endblock %}
+
+{% block header_primary_text %}My{% endblock %}
+{% block header_dashboard_text %}Summaries{% endblock %}
+
+{% block main_content_section %}
+    <section class="summary-container">
+        <div class="summary-header">
+            <h2>Conversation Recordings</h2>
+        </div>
+        <ul class="recordings-list" id="recordings-list-container">
+            <!-- Recordings will be loaded here by JavaScript -->
+        </ul>
+    </section>
+{% endblock %}
+
+{% block extra_styles %}
+    <style>
+        /* Summary specific styles */
+        .summary-container {
+            background-color: var(--card-bg-white);
+            border-radius: var(--border-radius-card);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-top: 25px;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .summary-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+
+        .recordings-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recording-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--bg-light-grey);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .recording-item:last-child {
+            border-bottom: none;
+        }
+
+        .recording-item:hover {
+            background-color: var(--bg-light-grey);
+        }
+
+        .recording-icon {
+            font-size: 1.8rem;
+            color: var(--primary-purple);
+            margin-right: 15px;
+        }
+
+        .recording-info {
+            flex-grow: 1;
+        }
+
+        .recording-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .recording-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .recording-meta span {
+            margin-right: 15px;
+        }
+
+        .recording-summary {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+    </style>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/recordings')
+                .then(response => response.json())
+                .then(recordings => {
+                    const container = document.getElementById('recordings-list-container');
+                    recordings.forEach(recording => {
+                        const recordingItem = `
+                            <li class="recording-item" onclick="location.href='/summary/${recording.filename}'">
+                                <i class="fas fa-file-audio recording-icon"></i>
+                                <div class="recording-info">
+                                    <div class="recording-title">${recording.title}</div>
+                                    <div class="recording-meta">
+                                        <span>Date: ${recording.date}</span>
+                                        <span>Duration: ${recording.duration}</span>
+                                        <span>Participants: ${recording.participants}</span>
+                                    </div>
+                                    <p class="recording-summary">${recording.summary}</p>
+                                </div>
+                            </li>
+                        `;
+                        container.insertAdjacentHTML('beforeend', recordingItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching recordings:', error));
+        });
+    </script>
+{% endblock %}
